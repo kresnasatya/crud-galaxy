@@ -23,12 +23,12 @@ export const Galaxy = () => {
             const galaxies = await db.select().from(galaxiesTable);
             return galaxies;
         },
-        show: async (id: number): Promise<GalaxyInterface> => {
+        show: async (id: number): Promise<GalaxyInterface | null> => {
             const galaxies = await db.select().from(galaxiesTable).where(eq(galaxiesTable.id, id));
-            return galaxies[0];
+            return galaxies[0] || null;
         },
-        insert: async (record: GalaxyInterface): Promise<GalaxyInterface | ValidationError> => {
-            if (record.name.trim() === '') {
+        insert: async (record: Omit<GalaxyInterface, 'id'>): Promise<GalaxyInterface | ValidationError> => {
+            if (!record.name || record.name.trim() === '') {
                 return {error: 'Please provide a galaxy name'}
             }
             const response = await db.insert(galaxiesTable).values({
@@ -58,10 +58,13 @@ export const Galaxy = () => {
 
             return results[0];
         },
-        destroy: async (id: number): Promise<void> => {
-            await db
+        destroy: async (id: number): Promise<boolean> => {
+            const result = await db
                 .delete(galaxiesTable)
-                .where(eq(galaxiesTable.id, id));
+                .where(eq(galaxiesTable.id, id))
+                .returning();
+
+            return result.length > 0;
         }
     }
 
