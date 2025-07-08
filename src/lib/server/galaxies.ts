@@ -1,6 +1,7 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
-import { galaxiesTable, usersTable } from './db/schema';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+import { galaxiesTable } from './db/schema';
 import { eq } from 'drizzle-orm';
+import Database from 'better-sqlite3';
 
 interface GalaxyInterface {
     id: number,
@@ -13,7 +14,8 @@ interface ValidationError {
 
 export type { GalaxyInterface, ValidationError }
 
-const db = drizzle(process.env.DB_URL!);
+const sqlite = new Database(process.env.DATABASE_URL || 'local.db');
+const db = drizzle(sqlite);
 
 export const Galaxy = () => {
     const api = {
