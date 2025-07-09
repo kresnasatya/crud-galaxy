@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, fetch }) => {
-    const id = params.slug;
+    const id = params.id;
 
     if (isNaN(Number(id))) {
         throw error(400, 'Invalid galaxy ID');
