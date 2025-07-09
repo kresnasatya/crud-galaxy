@@ -2,7 +2,7 @@ import { Galaxy } from '$lib/server/galaxies.js';
 import { json } from '@sveltejs/kit';
 
 export async function GET({params}) {
-    const id = params.slug;
+    const id = params.id;
 
     let galaxy = await Galaxy().show(Number(id));
 
@@ -31,7 +31,7 @@ export async function PUT({request}) {
 export async function DELETE({params}) {
     try {
         // Validate the parameter
-        const id = Number(params.slug);
+        const id = Number(params.id);
         if (isNaN(id)) {
             return json({ error: 'Invalid galaxy ID' }, { status: 400 });
         }

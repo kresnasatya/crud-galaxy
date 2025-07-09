@@ -5,7 +5,7 @@ export async function POST({request}) {
     const data = await request.json();
 
     try {
-        const result = await Galaxy().insert({
+        const result = await Galaxy().store({
             name: data.name
         });
 

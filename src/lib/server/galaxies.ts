@@ -23,7 +23,7 @@ export const Galaxy = () => {
             const galaxies = await db.select().from(galaxiesTable).where(eq(galaxiesTable.id, id));
             return galaxies[0] || null;
         },
-        insert: async (record: Omit<GalaxyInterface, 'id'>): Promise<GalaxyInterface | ValidationError> => {
+        store: async (record: Omit<GalaxyInterface, 'id'>): Promise<GalaxyInterface | ValidationError> => {
             if (!record.name || record.name.trim() === '') {
                 return {error: 'Please provide a galaxy name'}
             }
